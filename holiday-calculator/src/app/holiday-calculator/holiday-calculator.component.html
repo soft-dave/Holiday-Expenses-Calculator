@@ -1,0 +1,76 @@
+<div class="bg-dark text-center p-3 mb-5">
+    <h1 class="text-white">Holiday Expreses Calculator</h1>
+</div>
+
+<div class="container">
+    <div class="border p-2">
+        <form [formGroup]="expenseForm">
+            <div formArrayName="expenses" class="col-md-10 justify-content-center mx-auto">
+                <div *ngFor="let item of itemsFromArray.controls; let i = index">
+                    <div class="itme-style" [formGroupName]="i">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="name" class="form-label">Name</label>
+                                <input
+                                class="form-control mb-3"
+                                placeholder="name"
+                                formControlName="name"
+                                type="text"
+                                />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="name" class="form-label">Amount</label>    
+                                <input
+                                class="form-control mb-3"
+                                placeholder="amount"
+                                formControlName="amount"
+                                type="number"
+                                />
+                            </div>
+                            <div class="col-md-2 ps-5 d-flex align-items-center mt-3">
+                                <button (click)="removeItem(i)" [disabled]="this.itemsFromArray.controls.length == 1" class="btn btn-danger">Remove</button>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center mt-3">
+                                <button (click)="addItem()" class="btn btn-success" >Add</button>
+                            </div>
+                        </div>        
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-2">
+                <button [disabled]="!expenseForm.valid" (click)="submit()" class="btn btn-primary" type="submit">Settle Up</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="row mt-5" *ngIf="calculateData">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr class="text-center">
+                      <th scope="col">Owes</th>
+                      <th scope="col">Owed</th>
+                      <th scope="col">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-center">
+                    <ng-container *ngFor="let data of calculateData?.payouts">
+                        <tr *ngIf="calculateData?.payouts?.length">
+                        <td>{{data?.owes}}</td>
+                        <td>{{data?.owed}}</td>
+                        <td>{{data?.amount}}</td>
+                        </tr>
+                    </ng-container>
+                    <tr style="background-color: black; color: white; border-bottom: 1px solid white;">
+                        <th scope="row">Total</th>
+                        <td colspan="2">{{calculateData?.total}}</td>
+                    </tr>
+                    <tr style="background-color: black; color: white;">
+                        <th scope="row">Equal Share</th>
+                        <td colspan="2">{{calculateData?.equalShare}}</td>
+                    </tr>
+                  </tbody>
+              </table>
+        </div>
+    </div>
+</div>
